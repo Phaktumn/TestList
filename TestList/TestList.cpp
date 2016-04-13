@@ -19,6 +19,7 @@ Simple::Simple(int m)
 void print(Simple_Array<int> test)
 {
 	for (size_t i = 0; i < test.size(); i++) {
+		//Test for operator []
 		std::cout << test[i] << "|";
 	}
 	std::cout << "\n";
@@ -27,6 +28,7 @@ void print(Simple_Array<int> test)
 void print(Simple_Array<Simple*> test)
 {
 	for (size_t i = 0; i < test.size(); i++) {
+		//Test for operator []
 		std::cout << test[i]->m << "|";
 	}
 	std::cout << "\n";
@@ -34,14 +36,24 @@ void print(Simple_Array<Simple*> test)
 
 int main()
 {
+	std::cout << "Today`s Date: " << __DATE__ << std::endl;
+
 	Simple_Array<int> test;
 	Simple_Array<Simple*> simpleA;
-
+	
 	simpleA.push_back(new Simple(2));
 	simpleA.push_back(new Simple(4));
 	simpleA.push_back(new Simple(5));
 	simpleA.push_back(new Simple(12));
 	simpleA.push_back(new Simple(16));
+
+
+	test.push_back(2);  //1
+	test.push_back(5);  //2
+	test.push_back(15); //3
+	test.push_back(12); //4
+	test.push_back(16); //5
+	test.push_back(123);//6
 
 	std::cout << "Object List Initial State" << std::endl;
 	print(simpleA);
@@ -53,15 +65,6 @@ int main()
 	std::cout << "Add new Object at Position 1 " << std::endl;
 	simpleA.addAt(1, new Simple(69));
 	print(simpleA);
-
-	test.push_back(2);  //1
-	test.push_back(5);  //2
-	test.push_back(15); //3
-	test.push_back(12); //4
-	test.push_back(16); //5
-	test.push_back(123);//6
-
-	//test.Clear();
 
 	std::cout << "INT List Initial State" << std::endl;
 	print(test);

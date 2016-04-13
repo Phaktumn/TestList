@@ -1,6 +1,10 @@
 #define LINKED_LIST_H
 #ifdef LINKED_LIST_H
 
+#ifndef __cplusplus
+#error A C++ compiler is required!
+#endif 
+
 #include "stdafx.h"
 #include <cstdlib>
 #pragma once
@@ -43,6 +47,7 @@ public:
 			_Ptr->_Next = nullptr;
 			_size++;
 		}
+		fflush(stdin);
 	}
 
 	void pop_Back()
