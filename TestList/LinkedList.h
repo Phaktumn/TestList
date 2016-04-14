@@ -86,13 +86,16 @@ public:
 	{
 		int _curr_Index = 1;
 		Node* _Ptr = _Front_Ptr;
-		Node* _last_Ptr = _Front_Ptr;
+		Node* _last_Ptr = nullptr;
+		Node* _New_Data_;
 		if(_Index == 1){
-			_Front_Ptr->_Next = _last_Ptr;
-			_Front_Ptr->_Item = _data;
+			_last_Ptr = _Ptr;
+			_New_Data_ = (Node*)malloc(sizeof(Node));
+			_New_Data_->_Item = _data;
+			_New_Data_->_Next = _last_Ptr;
+			_Front_Ptr = _New_Data_;
 		}
 		else {
-			Node* _New_Data_;
 			while (_Ptr != nullptr) {
 				_curr_Index++;
 				_last_Ptr = _Ptr;

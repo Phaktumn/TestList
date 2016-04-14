@@ -1,8 +1,10 @@
 // TestList.cpp : Defines the entry point for the console application.\
 // Open ReadMe.txt
 //
-
 #include "stdafx.h"
+#include "StreamFile.h"
+
+IO file;
 
 class Simple
 {
@@ -20,24 +22,28 @@ void print(Simple_Array<int> test)
 {
 	for (size_t i = 0; i < test.size(); i++) {
 		//Test for operator []
-		std::cout << test[i] << "|";
+		cout << test[i] << "|";
+		file.print_toFile("Int number: List Node: " + to_string(i), to_string(test[i]));
 	}
-	std::cout << "\n";
+	cout << "\n";
 }
 
 void print(Simple_Array<Simple*> test)
 {
 	for (size_t i = 0; i < test.size(); i++) {
 		//Test for operator []
-		std::cout << test[i]->m << "|";
+		cout << test[i]->m << "|";
+		file.print_toFile("Simple Object: List Node: " + to_string(i), to_string(test[i]->m));
 	}
-	std::cout << "\n";
+	cout << "\n";
 }
 
 int main()
 {
-	std::cout << "Today`s Date: " << __DATE__ << std::endl;
+	cout << "Today`s Date: " << __DATE__ << endl;
 
+	file = IO("teste.txt");
+	file.openFile(_OF);
 	Simple_Array<int> test;
 	Simple_Array<Simple*> simpleA;
 	
@@ -55,34 +61,41 @@ int main()
 	test.push_back(16); //5
 	test.push_back(123);//6
 
-	std::cout << "Object List Initial State" << std::endl;
+	file.print_toFile("INFORMATION: ", "Object List Initial State");
 	print(simpleA);
 
-	std::cout << "Remove Node 2" << std::endl;
+	file.print_toFile("INFORMATION: ", "Remove Node 2");
 	simpleA.removeAt(2);
 	print(simpleA);
 
-	std::cout << "Add new Object at Position 1 " << std::endl;
+	file.print_toFile("INFORMATION: ", "Add new Object at Position 1 ");
 	simpleA.addAt(1, new Simple(69));
 	print(simpleA);
 
-	std::cout << "INT List Initial State" << std::endl;
+
+	file.print_toFile("INFORMATION: ", "INT List Initial State");
 	print(test);
 
-	std::cout << "pop last node" << std::endl;
+	test.addAt(1, 10);
+	print(test);
+
+	file.print_toFile("INFORMATION: ", "pop last node");
 	test.pop_Back();
 	print(test);
 
-	std::cout << "remove node number 3" << std::endl;
+	file.print_toFile("INFORMATION: ", "remove node number 3");
 	test.removeAt(3);
 	print(test);
 
-	std::cout << "\n";
-	std::cout << "Front of the List: " << test.front() << std::endl;
-	std::cout << "Back of the list: " << test.back() << std::endl;
+	cout << "\n";
+	file.print_toFile("INFORMATION: ", "Front of the List: " + to_string(test.front()));
+	file.print_toFile("INFORMATION: ", "Back of the list: " + to_string(test.back()));
+	
+	file.closeFile(_OF);
 
 	system("pause");
 
     return 0;
 }
+
 
