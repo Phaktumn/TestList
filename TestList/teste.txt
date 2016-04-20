@@ -1,46 +1,46 @@
-[INFORMATION: ] INFO:  Object List Initial State   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 0] INFO:  2   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 1] INFO:  4   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 2] INFO:  5   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 3] INFO:  12   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 4] INFO:  16   ->Apr 14 2016 13:57:42
-[INFORMATION: ] INFO:  Remove Node 2   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 0] INFO:  2   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 1] INFO:  5   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 2] INFO:  12   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 3] INFO:  16   ->Apr 14 2016 13:57:42
-[INFORMATION: ] INFO:  Add new Object at Position 1    ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 0] INFO:  69   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 1] INFO:  2   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 2] INFO:  5   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 3] INFO:  12   ->Apr 14 2016 13:57:42
-[Simple Object: List Node: 4] INFO:  16   ->Apr 14 2016 13:57:42
-[INFORMATION: ] INFO:  INT List Initial State   ->Apr 14 2016 13:57:42
-[Int number: List Node: 0] INFO:  2   ->Apr 14 2016 13:57:42
-[Int number: List Node: 1] INFO:  5   ->Apr 14 2016 13:57:42
-[Int number: List Node: 2] INFO:  15   ->Apr 14 2016 13:57:42
-[Int number: List Node: 3] INFO:  12   ->Apr 14 2016 13:57:42
-[Int number: List Node: 4] INFO:  16   ->Apr 14 2016 13:57:42
-[Int number: List Node: 5] INFO:  123   ->Apr 14 2016 13:57:42
-[Int number: List Node: 0] INFO:  10   ->Apr 14 2016 13:57:42
-[Int number: List Node: 1] INFO:  2   ->Apr 14 2016 13:57:42
-[Int number: List Node: 2] INFO:  5   ->Apr 14 2016 13:57:42
-[Int number: List Node: 3] INFO:  15   ->Apr 14 2016 13:57:42
-[Int number: List Node: 4] INFO:  12   ->Apr 14 2016 13:57:42
-[Int number: List Node: 5] INFO:  16   ->Apr 14 2016 13:57:42
-[Int number: List Node: 6] INFO:  123   ->Apr 14 2016 13:57:42
-[INFORMATION: ] INFO:  pop last node   ->Apr 14 2016 13:57:42
-[Int number: List Node: 0] INFO:  10   ->Apr 14 2016 13:57:42
-[Int number: List Node: 1] INFO:  2   ->Apr 14 2016 13:57:42
-[Int number: List Node: 2] INFO:  5   ->Apr 14 2016 13:57:42
-[Int number: List Node: 3] INFO:  15   ->Apr 14 2016 13:57:42
-[Int number: List Node: 4] INFO:  12   ->Apr 14 2016 13:57:42
-[Int number: List Node: 5] INFO:  16   ->Apr 14 2016 13:57:42
-[INFORMATION: ] INFO:  remove node number 3   ->Apr 14 2016 13:57:42
-[Int number: List Node: 0] INFO:  10   ->Apr 14 2016 13:57:42
-[Int number: List Node: 1] INFO:  2   ->Apr 14 2016 13:57:42
-[Int number: List Node: 2] INFO:  15   ->Apr 14 2016 13:57:42
-[Int number: List Node: 3] INFO:  12   ->Apr 14 2016 13:57:42
-[Int number: List Node: 4] INFO:  16   ->Apr 14 2016 13:57:42
-[INFORMATION: ] INFO:  Front of the List: 10   ->Apr 14 2016 13:57:42
-[INFORMATION: ] INFO:  Back of the list: 16   ->Apr 14 2016 13:57:42
+[INFORMATION: ] INFO:  Object List Initial State   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 0] INFO:  2   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 1] INFO:  4   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 2] INFO:  5   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 3] INFO:  12   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 4] INFO:  16   ->Apr 17 2016 21:19:24
+[INFORMATION: ] INFO:  Remove Node 2   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 0] INFO:  2   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 1] INFO:  5   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 2] INFO:  12   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 3] INFO:  16   ->Apr 17 2016 21:19:24
+[INFORMATION: ] INFO:  Add new Object at Position 1    ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 0] INFO:  69   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 1] INFO:  2   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 2] INFO:  5   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 3] INFO:  12   ->Apr 17 2016 21:19:24
+[Simple Object: List Node: 4] INFO:  16   ->Apr 17 2016 21:19:24
+[INFORMATION: ] INFO:  INT List Initial State   ->Apr 17 2016 21:19:24
+[Int number: List Node: 0] INFO:  2   ->Apr 17 2016 21:19:24
+[Int number: List Node: 1] INFO:  5   ->Apr 17 2016 21:19:24
+[Int number: List Node: 2] INFO:  15   ->Apr 17 2016 21:19:24
+[Int number: List Node: 3] INFO:  12   ->Apr 17 2016 21:19:24
+[Int number: List Node: 4] INFO:  16   ->Apr 17 2016 21:19:24
+[Int number: List Node: 5] INFO:  123   ->Apr 17 2016 21:19:24
+[Int number: List Node: 0] INFO:  10   ->Apr 17 2016 21:19:24
+[Int number: List Node: 1] INFO:  2   ->Apr 17 2016 21:19:24
+[Int number: List Node: 2] INFO:  5   ->Apr 17 2016 21:19:24
+[Int number: List Node: 3] INFO:  15   ->Apr 17 2016 21:19:24
+[Int number: List Node: 4] INFO:  12   ->Apr 17 2016 21:19:24
+[Int number: List Node: 5] INFO:  16   ->Apr 17 2016 21:19:24
+[Int number: List Node: 6] INFO:  123   ->Apr 17 2016 21:19:24
+[INFORMATION: ] INFO:  pop last node   ->Apr 17 2016 21:19:24
+[Int number: List Node: 0] INFO:  10   ->Apr 17 2016 21:19:24
+[Int number: List Node: 1] INFO:  2   ->Apr 17 2016 21:19:24
+[Int number: List Node: 2] INFO:  5   ->Apr 17 2016 21:19:24
+[Int number: List Node: 3] INFO:  15   ->Apr 17 2016 21:19:24
+[Int number: List Node: 4] INFO:  12   ->Apr 17 2016 21:19:24
+[Int number: List Node: 5] INFO:  16   ->Apr 17 2016 21:19:24
+[INFORMATION: ] INFO:  remove node number 3   ->Apr 17 2016 21:19:24
+[Int number: List Node: 0] INFO:  10   ->Apr 17 2016 21:19:24
+[Int number: List Node: 1] INFO:  2   ->Apr 17 2016 21:19:24
+[Int number: List Node: 2] INFO:  15   ->Apr 17 2016 21:19:24
+[Int number: List Node: 3] INFO:  12   ->Apr 17 2016 21:19:24
+[Int number: List Node: 4] INFO:  16   ->Apr 17 2016 21:19:24
+[INFORMATION: ] INFO:  Front of the List: 10   ->Apr 17 2016 21:19:24
+[INFORMATION: ] INFO:  Back of the list: 16   ->Apr 17 2016 21:19:24

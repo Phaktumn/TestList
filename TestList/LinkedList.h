@@ -14,7 +14,7 @@
 
 template<class T> class Simple_Array
 {
-	typedef struct Node {
+	struct Node {
 		T _Item;
 		Node* _Next;
 	};
@@ -54,7 +54,7 @@ public:
 	{
 		if (_Front_Ptr == nullptr) return;
 		Node* _Ptr = _Front_Ptr;
-		Node* _Prev_Ptr = _Front_Ptr;
+		Node* _Prev_Ptr;
 		while (_Ptr != nullptr) {
 			_Prev_Ptr = _Ptr;
 			_Ptr = _Ptr->_Next;
