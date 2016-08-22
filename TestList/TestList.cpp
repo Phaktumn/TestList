@@ -17,16 +17,43 @@ Simple::Simple(std::string m)
 
 int main()
 {
-	Simple_Array_<Simple*> ll = Simple_Array_<Simple*>();
-	BinaryTree<int*> bt = BinaryTree<int*>();
+	Linked_List<Simple*> ll = Linked_List<Simple*>();
+	BinaryTree<std::string> bt = BinaryTree<std::string>();
+	Graph<int> graph = Graph<int>();
 
-	srand(time(NULL));
+	srand(time(nullptr));
 
-	for (int i = 0; i < 100; i++) {
-		bt.insert(i, new int(rand() % 1000));
+	for (int i = 0; i < 5; i++) {
+		graph.addEdge(i, rand() % 100);
 	}
 
-	bt.listTree();
+	std::cout << "GRAFO" << std::endl;
+	graph.setConnections(2, 1);
+	graph.setConnections(2, 3);
+	graph.setConnections(2, 4);
+
+	graph.setConnections(1, 4);
+
+	graph.setConnections(3, 2);
+
+	graph.listGraph();
+
+	std::cout << "ARVORE" << std::endl;
+	for (int i = 0; i < 10; i++) {
+		bt.insert(i, rand() % 1000, std::to_string(i * 2));
+	}
+
+	const int r = 20;
+	char s[r][255];
+	for (int i = 0; i < r; i++) {
+		sprintf(s[i], "%80s", " ");
+	}
+
+	bt._print_t(bt.getRoot() , 0, 0, 0, s);
+	
+	for (int i = 0; i < r; i++) {
+		printf("%s\n", s[i]);
+	}
 
 	system("pause");
 
