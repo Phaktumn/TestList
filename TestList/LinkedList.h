@@ -1,6 +1,7 @@
 #define LINKED_LIST_H
 #include <string>
 #include <iomanip>
+#include <list>
 #ifdef LINKED_LIST_H
 
 #ifndef __cplusplus
@@ -18,58 +19,51 @@
 
 #define null nullptr
 
+template<class T> struct TreeNode { int _Index; int _Item; T _Info; TreeNode<T>* _Right; TreeNode<T>* _Left; };
+template<class T> struct Node { T _Item; Node<T>* _Next; };
+template<class T> struct DNode { T _Item; DNode<T>* next_node; DNode<T>* previous_node; };
+
 template <class T>
 class BinaryTree {
-	
-	struct TreeNode {
-		int _Index; 
-		int _Item; 
-		
-		T _Info;
 
-		TreeNode* _Right; 
-		TreeNode* _Left;
-	};
-
-	TreeNode* _Root;
+	TreeNode<T>* _Root;
 	int _Size;
-	TreeNode* newNode(int _code_i, int value_r, T info);
-	int maxDepth(TreeNode* node);
-	void insert(TreeNode* node, int code, int value_i, T info);
-	bool _find(TreeNode* node, int target);
-	TreeNode* _get(TreeNode* node, int target);
+	TreeNode<T>* newNode(int _code_i, int value_r, T info);
+	int maxDepth(TreeNode<T>* node);
+	void insert(TreeNode<T>* node, int code, int value_i, T info);
+	bool _find(TreeNode<T>* node, int target);
+	TreeNode<T>* _get(TreeNode<T>* node, int target);
 
 	enum Direction {
 		_Go_Left = 1,
 		_Go_Right= 2,
 		_None    =-1
 	};
-	Direction MovePointer(TreeNode* node, int item_i);
+	Direction MovePointer(TreeNode<T>* node, int item_i);
 
 public:
-	TreeNode* getRoot() { return this->_Root; }
+	TreeNode<T>* getRoot() { return this->_Root; }
 	BinaryTree<T>()
 		: _Root(null), _Size(0) { }
 
 	bool find(int target);
-	TreeNode* get(int target);
+	TreeNode<T>* get(int target);
 	void insert(int code, int value_i, T value);
 
 	int size() const;
 	int maxDepth();
-	T minValue(TreeNode* node);
+	T minValue(TreeNode<T>* node);
 	void listTree();
-	void listTree(TreeNode* node, int indet);
+	void listTree(TreeNode<T>* node, int indet);
 	void listTree(int indet);
 
-	int _print_t(TreeNode *tree, int is_left, int offset, int depth, char s[20][255]);
+	int _print_t(TreeNode<T> *tree, int is_left, int offset, int depth, char s[20][255]);
 };
 
 template <class T>
 class Linked_List
 {
-	struct Node { T _Item; Node* _Next; };
-	Node* _Front_Ptr;
+	Node<T>* _Front_Ptr;
 	int _size;
 
 public:
@@ -89,6 +83,8 @@ public:
 
 	long int hashcode() const;
 
+	static void printList(Linked_List<T>& list);
+
 	Linked_List<T>();
 	~Linked_List<T>();
 };
@@ -100,16 +96,23 @@ class Edge {
 	T _edgeInfo;
 	double _Weight;
 
+	int _visited;
+
 	Linked_List< Edge* > _connections;
 
 public:
 	Edge(T _edgeInfo, double _Weight)
-		: _edgeInfo(_edgeInfo), _Weight(_Weight) { }
+		: _edgeInfo(_edgeInfo), _Weight(_Weight), _visited(0)
+	{ }
 
 	void addConnection(Edge* edge) { _connections.push_back(edge); }
 	T getInfo() { return _edgeInfo; }
 	Linked_List< Edge* > getConnectionList() { return _connections; }
 	double getWeight() const { return _Weight; }
+
+	void setVisited() { _visited = 1; }
+	int isVisited() const { return _visited; }
+	void resetState() { _visited = 0; }
 };
 
 template <class T>
@@ -117,6 +120,7 @@ class Graph {
 	Linked_List< Edge < T >* > graph;
 
 	int p_Size;
+
 public:
 	explicit Graph()
 		: p_Size{ 0 }
@@ -127,12 +131,17 @@ public:
 	void setConnections(int EdgeIndex, int connect_To);
 	void listGraph();
 
-	void shortestPath(T start, T end);
+	bool hasPath(T start, T end);
+	void printAllPaths(T start, T end);
+	void allPaths(T u, T d, int path[], int &path_index);
+
+	void resetEdges();
 };
 
 template <class T>
 void Graph<T>::addEdge(T info, double i) {
 	graph.push_back(new Edge<T>(info,i));
+	p_Size++;
 }
 
 template <class T>
@@ -153,8 +162,56 @@ void Graph<T>::listGraph() {
 }
 
 template <class T>
-void Graph<T>::shortestPath(T start, T end) {
+bool Graph<T>::hasPath(T start, T end) {
 
+}
+
+template <class T>
+void Graph<T>::printAllPaths(T start, T end) {
+
+	// Create an array to store paths
+	int *path = new int[p_Size];
+	int path_index = 0; // Initialize path[] as empty
+	allPaths(start, end, path, path_index);
+
+	resetEdges();
+}
+
+template <class T>
+void Graph<T>::allPaths(T u, T d, int path[], int& path_index)
+{
+	// Mark the current node and store it in path[]
+	graph.operator[](u)->setVisited();
+	path[path_index] = u;
+	path_index++;
+
+	// If current vertex is same as destination, then print
+	// current path[]
+	if (u == d) {
+		for (int i = 0; i<path_index; i++)
+			std::cout << path[i] << " ";
+		std::cout << "end" << std::endl;
+	}
+
+	else // If current vertex is not destination
+	{
+		// Recur for all the vertices adjacent to current vertex
+		for (int i = 0; i != graph.operator[](u)->getConnectionList().size(); ++i) {
+			Linked_List< Edge < T >* > aux = graph.operator[](u)->getConnectionList();
+			if (!aux.operator[](i)->isVisited()) {
+				allPaths(int(aux.operator[](i)->getInfo()), d, path, path_index);
+			}
+		}
+	}
+
+	// Remove current vertex from path[] and mark it as unvisited
+	path_index--;
+	graph.operator[](u)->resetState();
+}
+
+template <class T>
+void Graph<T>::resetEdges() {
+	for (size_t i = 0; i < p_Size; i++) { graph.operator[](i)->resetState(); }
 }
 
 /* Graph */ /* Graph */ /* Graph */ /* Graph */ /* Graph */ /* Graph */
@@ -168,25 +225,14 @@ bool BinaryTree<T>::find(int target) {
 }
 
 template <class T>
-typename BinaryTree<T>::TreeNode* BinaryTree<T>::_get(TreeNode* node, int target) {
-	if(node == null) return null;
-	if(MovePointer(node, target) == Direction::_Go_Left) {
-		if (node->_Item == target) return node;
-		_get(node->_Left, target);
-	}
-	if(MovePointer(node, target) == Direction::_Go_Right) {
-		if (node->_Item == target) return node;
-		_get(node->_Right, target);
-	}
-}
-
-template <class T>
-typename BinaryTree<T>::TreeNode* BinaryTree<T>::get(int target) {
+TreeNode<T>* BinaryTree<T>::get(int target)
+{
 	return _get(_Root, target);
 }
 
+
 template <class T>
-bool BinaryTree<T>::_find(TreeNode* node, int target)
+bool BinaryTree<T>::_find(TreeNode<T>* node, int target)
 {
 	if(MovePointer(node, target) == Direction::_Go_Left) {
 		if (node->_Left == null) return FALSE;
@@ -202,7 +248,21 @@ bool BinaryTree<T>::_find(TreeNode* node, int target)
 }
 
 template <class T>
-typename BinaryTree<T>::Direction BinaryTree<T>::MovePointer(TreeNode* node, int item_i)
+TreeNode<T>* BinaryTree<T>::_get(TreeNode<T>* node, int target)
+{
+	if (node == null) return null;
+	if (MovePointer(node, target) == Direction::_Go_Left) {
+		if (node->_Item == target) return node;
+		_get(node->_Left, target);
+	}
+	if (MovePointer(node, target) == Direction::_Go_Right) {
+		if (node->_Item == target) return node;
+		_get(node->_Right, target);
+	}
+}
+
+template <class T>
+typename BinaryTree<T>::Direction BinaryTree<T>::MovePointer(TreeNode<T>* node, int item_i)
 {
 	if (node == null) return Direction::_None;
 	if (node->_Item < item_i) 
@@ -218,7 +278,7 @@ void BinaryTree<T>::insert(int code, int value_i, T info)
 }
 
 template <class T>
-void BinaryTree<T>::insert(TreeNode* node, int code, int value_i, T info) {
+void BinaryTree<T>::insert(TreeNode<T>* node, int code, int value_i, T info) {
 	if (MovePointer(node, value_i) == Direction::_Go_Left) {
 		if(node->_Left == null){ node->_Left = newNode(code, value_i, info); }
 		else insert(node->_Left, code, value_i, info);
@@ -235,10 +295,9 @@ int BinaryTree<T>::size() const {
 	return _Size;
 }
 
-
 template <class T>
-typename BinaryTree<T>::TreeNode* BinaryTree<T>::newNode(int _code_i,int value, T value_r) {
-	TreeNode* ptr = new TreeNode;
+TreeNode<T>* BinaryTree<T>::newNode(int _code_i, int value_r, T info) {
+	TreeNode<T>* ptr = new TreeNode<T>;
 	ptr->_Index = _code_i;
 	ptr->_Item = value;
 	ptr->_Info = value_r;
@@ -249,7 +308,7 @@ typename BinaryTree<T>::TreeNode* BinaryTree<T>::newNode(int _code_i,int value, 
 }
 
 template <class T>
-int BinaryTree<T>::maxDepth(TreeNode* node)
+int BinaryTree<T>::maxDepth(TreeNode<T>* node)
 {
 	if (node == null) { return 0; }
 	else {
@@ -271,11 +330,11 @@ void BinaryTree<T>::listTree() {
 }
 
 template <class T>
-void BinaryTree<T>::listTree(TreeNode* node, int indent)
+void BinaryTree<T>::listTree(TreeNode<T>* node, int indent)
 { }
 
 template<class T>
-int BinaryTree<T>::_print_t(TreeNode *tree, int is_left, int offset, int depth, char s[20][255])
+int BinaryTree<T>::_print_t(TreeNode<T> *tree, int is_left, int offset, int depth, char s[20][255])
 {
 	char b[20];
 	int width = 5;
@@ -346,21 +405,21 @@ template <class T>
 void Linked_List<T>::push_back(T _value)
 {
 	if (_Front_Ptr == nullptr) {
-		_Front_Ptr = (Node*)(malloc(sizeof(Node)));
+		_Front_Ptr = (Node<T>*)(malloc(sizeof(Node<T>)));
 		_Front_Ptr->_Item = _value;
 		_Front_Ptr->_Next = nullptr;
 		_size++;
 	}
 	else {
-		Node* _Prev_Ptr = _Front_Ptr;
-		Node* _Ptr = _Front_Ptr;
+		Node<T>* _Prev_Ptr = _Front_Ptr;
+		Node<T>* _Ptr = _Front_Ptr;
 
 		while (_Ptr != nullptr) {
 			_Prev_Ptr = _Ptr;
 			_Ptr = _Ptr->_Next;
 		}
 
-		_Ptr = static_cast<Node*>(malloc(sizeof(Node)));
+		_Ptr = static_cast<Node<T>*>(malloc(sizeof(Node<T>)));
 		_Prev_Ptr->_Next = _Ptr;
 		_Ptr->_Item = _value;
 		_Ptr->_Next = nullptr;
@@ -373,8 +432,8 @@ template <class T>
 void Linked_List<T>::pop_Back()
 {
 	if (_Front_Ptr == nullptr) return;
-	Node* _Ptr = _Front_Ptr;
-	Node* _Prev_Ptr;
+	Node<T>* _Ptr = _Front_Ptr;
+	Node<T>* _Prev_Ptr;
 	while (_Ptr != nullptr) {
 		_Prev_Ptr = _Ptr;
 		_Ptr = _Ptr->_Next;
@@ -391,7 +450,7 @@ template <class T>
 T Linked_List<T>::operator[](int _Index)
 {
 	int _curr_Index = 0;
-	Node* _Ptr = _Front_Ptr;
+	Node<T>* _Ptr = _Front_Ptr;
 	if (_Ptr != nullptr) {
 		while (_curr_Index < _Index) {
 			_Ptr = _Ptr->_Next;
@@ -406,12 +465,12 @@ T Linked_List<T>::operator[](int _Index)
 template <class T>
 inline void Linked_List<T>::addAt(unsigned _Index, T _data) {
 	int _curr_Index = 1;
-	Node* _Ptr = _Front_Ptr;
-	Node* _last_Ptr = nullptr;
-	Node* _New_Data_;
+	Node<T>* _Ptr = _Front_Ptr;
+	Node<T>* _last_Ptr = nullptr;
+	Node<T>* _New_Data_;
 	if (_Index == 1) {
 		_last_Ptr = _Ptr;
-		_New_Data_ = (Node*)malloc(sizeof(Node));
+		_New_Data_ = (Node<T>*)malloc(sizeof(Node<T>));
 		_New_Data_->_Item = _data;
 		_New_Data_->_Next = _last_Ptr;
 		_Front_Ptr = _New_Data_;
@@ -424,7 +483,7 @@ inline void Linked_List<T>::addAt(unsigned _Index, T _data) {
 			if (_curr_Index == _Index)
 				break;
 		}
-		_New_Data_ = (Node*)malloc(sizeof(Node));
+		_New_Data_ = (Node<T>*)malloc(sizeof(Node<T>));
 		_New_Data_->_Item = _data;
 		_New_Data_->_Next = _Ptr;
 		_last_Ptr->_Next = _New_Data_;
@@ -436,8 +495,8 @@ template <class T>
 inline void Linked_List<T>::removeAt(unsigned _Index)
 {
 	unsigned short int _curr_Index = 1;
-	Node* _Ptr = _Front_Ptr;
-	//Remove The first Node
+	Node<T>* _Ptr = _Front_Ptr;
+	//Remove The first Node<T>
 	if (_Index == 1) {
 		_Front_Ptr = _Ptr->_Next;
 		free(_Ptr);
@@ -445,7 +504,7 @@ inline void Linked_List<T>::removeAt(unsigned _Index)
 	}
 
 	else {
-		Node* _last_Ptr = _Front_Ptr;
+		Node<T>* _last_Ptr = _Front_Ptr;
 		while (_Ptr != nullptr) {
 			_curr_Index++;
 			_last_Ptr = _Ptr;
@@ -463,8 +522,8 @@ inline void Linked_List<T>::removeAt(unsigned _Index)
 template <class T>
 void Linked_List<T>::Clear()
 {
-	Node* _Ptr = _Front_Ptr;
-	Node* _aux__Ptr = _Front_Ptr;
+	Node<T>* _Ptr = _Front_Ptr;
+	Node<T>* _aux__Ptr = _Front_Ptr;
 	while (_Ptr != nullptr) {
 		_Ptr = _aux__Ptr;
 		if (_Ptr->_Next == nullptr) {
@@ -488,7 +547,7 @@ T Linked_List<T>::front()
 template <class T>
 T Linked_List<T>::back()
 {
-	Node* _Ptr = _Front_Ptr;
+	Node<T>* _Ptr = _Front_Ptr;
 	while (_Ptr != nullptr) {
 		if (_Ptr->_Next == nullptr) break;
 		_Ptr = _Ptr->_Next;
@@ -499,7 +558,7 @@ T Linked_List<T>::back()
 template <class T>
 T Linked_List<T>::find(T _value)
 {
-	Node* _Ptr = _Front_Ptr;
+	Node<T>* _Ptr = _Front_Ptr;
 	while (_Ptr->_Next != nullptr) {
 		if(_Ptr == _value) return _Ptr;
 		_Ptr = _Ptr->_Next;
@@ -517,7 +576,7 @@ bool Linked_List<T>::contains(T _value)
 template <class T>
 void Linked_List<T>::display() const
 {
-	Node* _Ptr = _Front_Ptr;
+	Node<T>* _Ptr = _Front_Ptr;
 	while (_Ptr->_Next != nullptr) {
 		std::cout << _Ptr->_Item << std::endl;
 		_Ptr = _Ptr->_Next;
@@ -542,6 +601,18 @@ long int Linked_List<T>::hashcode() const {
 	long double i = 2352338.2492847;
 	size_t r = sizeof i;
 	return r;
+}
+
+template <class T>
+void Linked_List<T>::printList(Linked_List<T>& list) {
+	std::cout << "ROOT";
+	for (int i = 0; i < list.size(); i++) {
+		if (i == 0) { std::cout << "->|"; }
+		else {
+			std::cout << "|";
+		}
+		std::cout << std::to_string(int(i)) + " |->(" + std::to_string(int(list[i])) + ")->";
+ 	}
 }
 
 template <class T>
