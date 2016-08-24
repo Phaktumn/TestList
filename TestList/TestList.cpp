@@ -23,57 +23,111 @@ int main()
 
 	srand(time(nullptr));
 
-	for (size_t i = 0; i < 15; i++) {
-		ll.push_back(rand() % 100);
-	}
-
-	Linked_List<int>::printList(ll);
-
-	//for (int i = 0; i < 10; i++) {
-	//	graph.addEdge(i, rand() % 100);
+	//for (size_t i = 0; i < 15; i++) {
+	//	ll.push_back(rand() % 100);
 	//}
 
-	//std::cout << "GRAFO" << std::endl;
-	//graph.setConnections(0, 4);
+	//Linked_List<int>::printList(ll);
 
-	//graph.setConnections(1, 0);
-	//graph.setConnections(1, 2);
+	for (int i = 0; i < 9; i++) {
+		graph.addVertex(i);
+	}
 
-	//graph.setConnections(2, 3);
-	//graph.setConnections(2, 7);
-	//graph.setConnections(2, 9);
+	//0-1-2
+	//|X|X|
+	//3-4-5
+	//|X|X|
+	//6-7-8
+	//Size x = 3
+	//Size y = 3
 
-	//graph.setConnections(3, 2);
-	//graph.setConnections(3, 4);
-	//graph.setConnections(3, 8);
+	std::cout << "GRAFO" << std::endl;
+	graph.addConnections(0, 1, rand() % 100);
+	graph.addConnections(0, 4, rand() % 100);
+	graph.addConnections(0, 7, rand() % 100);
+	graph.addConnections(0, 8, rand() % 100);
+	graph.addConnections(1, 5, rand() % 100);
+	graph.addConnections(1, 7, rand() % 100);
+	graph.addConnections(1, 8, rand() % 100);
+	graph.addConnections(1, 0, rand() % 100);
+	graph.addConnections(2, 6, rand() % 100);
+	graph.addConnections(3, 1, rand() % 100);
+	graph.addConnections(3, 8, rand() % 100);
+	graph.addConnections(3, 0, rand() % 100);
+	graph.addConnections(3, 5, rand() % 100);
+	graph.addConnections(4, 6, rand() % 100);
+	graph.addConnections(4, 2, rand() % 100);
+	graph.addConnections(4, 8, rand() % 100);
+	graph.addConnections(5, 1, rand() % 100);
+	graph.addConnections(5, 2, rand() % 100);
+	graph.addConnections(5, 0, rand() % 100);
+	graph.addConnections(5, 4, rand() % 100);
+	graph.addConnections(6, 1, rand() % 100);
+	graph.addConnections(7, 3, rand() % 100);
+	graph.addConnections(7, 1, rand() % 100);
+	graph.addConnections(7, 0, rand() % 100);
+	graph.addConnections(7, 8, rand() % 100);
+	graph.addConnections(7, 4, rand() % 100);
+	graph.addConnections(8, 7, rand() % 100);
+	graph.addConnections(8, 2, rand() % 100);
+	graph.addConnections(8, 5, rand() % 100);
+	graph.addConnections(8, 1, rand() % 100);
+	graph.addConnections(8, 4, rand() % 100);
+	graph.addConnections(8, 3, rand() % 100);
 
-	//graph.setConnections(4, 1);
+	//graph.addConnections(0, 1, 1);
+	//graph.addConnections(0, 4, 1.25);
+	//graph.addConnections(0, 3, 1);
 
-	//graph.setConnections(5, 1);
-	//graph.setConnections(5, 3);
+	//graph.addConnections(1, 0, 1);
+	//graph.addConnections(1, 2, 1);
+	//graph.addConnections(1, 3, 1.25);
+	//graph.addConnections(1, 4, 1);
+	//graph.addConnections(1, 5, 1.25);
 
-	//graph.setConnections(6, 2);
-	//graph.setConnections(6, 8);
-	//graph.setConnections(6, 1);
+	//graph.addConnections(2, 1, 1);
+	//graph.addConnections(2, 4, 1.25);
+	//graph.addConnections(2, 5, 1);
 
-	//graph.setConnections(7, 3);
-	//graph.setConnections(7, 1);
-	//graph.setConnections(7, 2);
-	//graph.setConnections(7, 9);
+	//graph.addConnections(3, 0, 1);
+	//graph.addConnections(3, 1, 1.25);
+	//graph.addConnections(3, 4, 1);
+	//graph.addConnections(3, 6, 1);
+	//graph.addConnections(3, 7, 1.25);
 
-	//graph.setConnections(8, 2);
-	//graph.setConnections(8, 6);
-	//graph.setConnections(8, 1);
-	//graph.setConnections(8, 0);
+	//graph.addConnections(4, 0, 1.25);
+	//graph.addConnections(4, 1, 1);
+	//graph.addConnections(4, 2, 1.25);
+	//graph.addConnections(4, 3, 1);
+	//graph.addConnections(4, 5, 1);
+	//graph.addConnections(4, 6, 1.25);
+	//graph.addConnections(4, 7, 1);
+	//graph.addConnections(4, 8, 1.25);
 
-	//graph.setConnections(9, 5);
-	//graph.setConnections(9, 2);
-	//graph.setConnections(9, 8);
-	//graph.setConnections(9, 7);
+	//graph.addConnections(5, 1, 1.25);
+	//graph.addConnections(5, 2, 1);
+	//graph.addConnections(5, 4, 1);
+	//graph.addConnections(5, 7, 1.25);
+	//graph.addConnections(5, 8, 1);
 
-	//graph.listGraph();
-	//std::cout << "\n";
-	//graph.printAllPaths(0, 5);
+	//graph.addConnections(6, 3, 1);
+	//graph.addConnections(6, 4, 1.25);
+	//graph.addConnections(6, 7, 1);
+
+	//graph.addConnections(7, 3, 1.25);
+	//graph.addConnections(7, 4, 1);
+	//graph.addConnections(7, 5, 1.25);
+	//graph.addConnections(7, 6, 1);
+	//graph.addConnections(7, 8, 1);
+
+	//graph.addConnections(8, 4, 1.25);
+	//graph.addConnections(8, 5, 1);
+	//graph.addConnections(8, 7, 1);
+
+	graph.listGraph();
+	std::cout << "\n";
+	graph.printAllPaths(0, 8);
+
 
 	//std::cout << "ARVORE" << std::endl;
 	//for (int i = 0; i < 10; i++) {

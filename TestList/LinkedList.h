@@ -19,9 +19,15 @@
 
 #define null nullptr
 
-template<class T> struct TreeNode { int _Index; int _Item; T _Info; TreeNode<T>* _Right; TreeNode<T>* _Left; };
-template<class T> struct Node { T _Item; Node<T>* _Next; };
-template<class T> struct DNode { T _Item; DNode<T>* next_node; DNode<T>* previous_node; };
+template <class T> class BinaryTree;
+template <class T> class Linked_List;
+template <class T> class Vertex;
+template <class T> class Graph;
+
+template <class T> struct TreeNode { int _Index; int _Item; T _Info; TreeNode<T>* _Right; TreeNode<T>* _Left; };
+template <class T> struct Node { T _Item; Node<T>* _Next; };
+template <class T> struct DNode { T _Item; DNode<T>* next_node; DNode<T>* previous_node; };
+template <class T> struct Edge { Vertex<T>* _connection; double Weight; explicit Edge(double w_x, Vertex<T>* con) : _connection(con), Weight(w_x) {} };
 
 template <class T>
 class BinaryTree {
@@ -43,8 +49,7 @@ class BinaryTree {
 
 public:
 	TreeNode<T>* getRoot() { return this->_Root; }
-	BinaryTree<T>()
-		: _Root(null), _Size(0) { }
+	BinaryTree<T>() : _Root(null), _Size(0) { }
 
 	bool find(int target);
 	TreeNode<T>* get(int target);
@@ -52,7 +57,7 @@ public:
 
 	int size() const;
 	int maxDepth();
-	T minValue(TreeNode<T>* node);
+	//T minValue(TreeNode<T>* node);
 	void listTree();
 	void listTree(TreeNode<T>* node, int indet);
 	void listTree(int indet);
@@ -70,12 +75,13 @@ public:
 	void push_back(T _value);
 	void pop_Back();
 	T operator [](int _Index);
+	Node<T> operator ()(int _Index);
 	void addAt(unsigned int _Index, T _data);
 	void removeAt(unsigned int _Index);
-	void Clear();
 	T front();
 	T back();
 	T find(T _value);
+	void Clear();
 	bool contains(T _value);
 	void display() const;
 	unsigned int isEmpty() const;
@@ -92,23 +98,23 @@ public:
 /* Graph */ /* Graph */ /* Graph */ /* Graph */ /* Graph */ /* Graph */
 
 template <class T>
-class Edge {
+class Vertex {
 	T _edgeInfo;
-	double _Weight;
 
 	int _visited;
 
-	Linked_List< Edge* > _connections;
+	Linked_List< Edge < T >* > _connections;
 
 public:
-	Edge(T _edgeInfo, double _Weight)
-		: _edgeInfo(_edgeInfo), _Weight(_Weight), _visited(0)
-	{ }
+	explicit Vertex(T _edgeInfo)
+		: _edgeInfo(_edgeInfo), _visited(0) { }
 
-	void addConnection(Edge* edge) { _connections.push_back(edge); }
-	T getInfo() { return _edgeInfo; }
-	Linked_List< Edge* > getConnectionList() { return _connections; }
-	double getWeight() const { return _Weight; }
+	void addConnection(Edge < T > * edge) { _connections.push_back(edge); }
+	T getInfo(){
+		if(_edgeInfo != NULL) return _edgeInfo;
+		else return NULL;
+	}
+	Linked_List< Edge < T > * > getConnectionList() { return _connections; }
 
 	void setVisited() { _visited = 1; }
 	int isVisited() const { return _visited; }
@@ -117,36 +123,44 @@ public:
 
 template <class T>
 class Graph {
-	Linked_List< Edge < T >* > graph;
+	Linked_List< Vertex < T >* > graph;
 
 	int p_Size;
+
+	int counter = 0;
+	int shotW = INT16_MAX;
 
 public:
 	explicit Graph()
 		: p_Size{ 0 }
 	{ }
 
+	Linked_List< Vertex < T >* > getList() { return graph; }
 	int Size() const { return p_Size; }
-	void addEdge(T info, double i);
-	void setConnections(int EdgeIndex, int connect_To);
+	void addVertex(T info);
+	void addConnections(int EdgeIndex, int connect_To, double weight);
 	void listGraph();
 
 	bool hasPath(T start, T end);
 	void printAllPaths(T start, T end);
 	void allPaths(T u, T d, int path[], int &path_index);
+	void shortestPath(T start, T end, int weigths[], int allW[], int path[], int &path_i, Linked_List<int>* sh, int shortAll);
+
+	void clear();
 
 	void resetEdges();
 };
 
+
 template <class T>
-void Graph<T>::addEdge(T info, double i) {
-	graph.push_back(new Edge<T>(info,i));
+void Graph<T>::addVertex(T info) {
+	graph.push_back(new Vertex<T>(info));
 	p_Size++;
 }
 
 template <class T>
-void Graph<T>::setConnections(int EdgeIndex, int connect_To) {
-	graph.operator[](EdgeIndex)->addConnection(graph.operator[](connect_To));
+void Graph<T>::addConnections(int EdgeIndex, int connect_To, double weight) {
+	graph.operator[](EdgeIndex)->addConnection(new Edge<T>(weight, graph.operator[](connect_To)));
 }
 
 template <class T>
@@ -154,16 +168,17 @@ void Graph<T>::listGraph() {
 	for (size_t i = 0; i < graph.size(); i++) {
 		std::cout << std::to_string(graph.operator[](i)->getInfo()) + "|";
 		for (size_t z = 0; z < graph.operator[](i)->getConnectionList().size(); z++) {
-			std::cout << "--|"+std::to_string(int(graph.operator[](i)->getConnectionList().operator[](z)->getWeight()))+
-				"|-->("+std::to_string(graph.operator[](i)->getConnectionList().operator[](z)->getInfo())+")";
+			std::cout << "--|"+ std::to_string(graph.operator[](i)->getConnectionList().operator[](z)->Weight)+
+				"|-->("+ std::to_string(graph.operator[](i)->getConnectionList().operator[](z)->_connection->getInfo())+")";
 		}
 		std::cout << "\n";
 	}
 }
 
 template <class T>
-bool Graph<T>::hasPath(T start, T end) {
-
+bool Graph<T>::hasPath(T start, T end)
+{
+	return false;
 }
 
 template <class T>
@@ -172,7 +187,32 @@ void Graph<T>::printAllPaths(T start, T end) {
 	// Create an array to store paths
 	int *path = new int[p_Size];
 	int path_index = 0; // Initialize path[] as empty
-	allPaths(start, end, path, path_index);
+
+	int weigts_i[9];
+	for (size_t i = 0; i < 9; i++) {
+		weigts_i[i] = 0;
+	}
+
+	int lessW = INT16_MAX;
+	int allW[1000];
+	for (size_t i = 0; i < 1000; i++) {
+		allW[i] = -1;
+	}
+
+	Linked_List<int>* shortest = new Linked_List<int>();
+
+ 	//allPaths(start, end, path, path_index);
+	shortestPath(start, end, weigts_i, allW, path, path_index, shortest, 1000);
+	for (size_t i = 0; i < counter; i++) {
+		if(allW[i] <= lessW) {
+			lessW = allW[i];
+		}
+	}
+	std::cout << "\nSHORTEST PATH: " << std::endl;
+	for (auto x = 0; x < shortest->size(); x++) {
+			std::cout  <<  "(" << std::to_string(shortest->operator[](x)) << ")->";
+	}
+	std::cout << " |Weight: " << std::to_string(lessW);
 
 	resetEdges();
 }
@@ -188,18 +228,17 @@ void Graph<T>::allPaths(T u, T d, int path[], int& path_index)
 	// If current vertex is same as destination, then print
 	// current path[]
 	if (u == d) {
-		for (int i = 0; i<path_index; i++)
-			std::cout << path[i] << " ";
+		for (int i = 0; i<path_index; i++) std::cout << path[i] << " ";
 		std::cout << "end" << std::endl;
 	}
 
-	else // If current vertex is not destination
+	else // If current vertex is not destination  
 	{
 		// Recur for all the vertices adjacent to current vertex
 		for (int i = 0; i != graph.operator[](u)->getConnectionList().size(); ++i) {
 			Linked_List< Edge < T >* > aux = graph.operator[](u)->getConnectionList();
-			if (!aux.operator[](i)->isVisited()) {
-				allPaths(int(aux.operator[](i)->getInfo()), d, path, path_index);
+			if (!aux.operator[](i)->_connection->isVisited()) {
+				allPaths(int(aux.operator[](i)->_connection->getInfo()), d, path, path_index);
 			}
 		}
 	}
@@ -207,6 +246,49 @@ void Graph<T>::allPaths(T u, T d, int path[], int& path_index)
 	// Remove current vertex from path[] and mark it as unvisited
 	path_index--;
 	graph.operator[](u)->resetState();
+}
+
+template <class T>
+void Graph<T>::shortestPath(T start, T end, int weigths[], int allW[], int path[], int& path_i, Linked_List<int>* sh, int shortAll)
+{
+	graph.operator[](start)->setVisited();
+	path[path_i] = start;
+	path_i++;
+
+	if(start == end) {
+		int totalW = 0;
+		for (size_t i = 0; i < path_i; i++) {
+			totalW += weigths[i];
+		}
+	
+		if (totalW < shotW) {
+			shotW = totalW;
+			sh->Clear();
+			for (size_t x = 0; x < path_i; x++) {
+				sh->push_back(path[x]);
+			}
+		}
+		
+		allW[counter++] = totalW;
+		for (int i = 0; i<path_i; i++) {
+			std::cout << "(" + std::to_string(path[i]) + ")|";
+		}
+		std::cout << " W " << std::to_string(totalW) << std::endl;
+	}
+	else {
+		for (size_t i = 0; i < graph.operator[](start)->getConnectionList().size(); ++i) {
+			Linked_List< Edge < T >* > aux = graph.operator[](start)->getConnectionList();
+			if(!aux.operator[](i)->_connection->isVisited()) {
+				weigths[path_i] = int(aux.operator[](i)->Weight);
+				Vertex<T>* auxCon = aux.operator[](i)->_connection;
+				int info = 0;
+				if(auxCon!=null) info = int(auxCon->getInfo());
+				shortestPath(info, end, weigths, allW, path, path_i, sh, shortAll);
+			}
+		}
+	}
+	path_i--;
+	graph.operator[](start)->resetState();
 }
 
 template <class T>
@@ -259,6 +341,7 @@ TreeNode<T>* BinaryTree<T>::_get(TreeNode<T>* node, int target)
 		if (node->_Item == target) return node;
 		_get(node->_Right, target);
 	}
+	return nullptr;
 }
 
 template <class T>
@@ -299,7 +382,7 @@ template <class T>
 TreeNode<T>* BinaryTree<T>::newNode(int _code_i, int value_r, T info) {
 	TreeNode<T>* ptr = new TreeNode<T>;
 	ptr->_Index = _code_i;
-	ptr->_Item = value;
+	ptr->_Item = info;
 	ptr->_Info = value_r;
 	ptr->_Left = null;
 	ptr->_Right = null;
@@ -447,8 +530,7 @@ void Linked_List<T>::pop_Back()
 }
 
 template <class T>
-T Linked_List<T>::operator[](int _Index)
-{
+T Linked_List<T>::operator[](int _Index) {
 	int _curr_Index = 0;
 	Node<T>* _Ptr = _Front_Ptr;
 	if (_Ptr != nullptr) {
@@ -458,6 +540,21 @@ T Linked_List<T>::operator[](int _Index)
 			_curr_Index++;
 		}
 		return _Ptr->_Item;
+	}
+	return 0;
+}
+
+template <class T>
+Node<T> Linked_List<T>::operator()(int _Index) {
+	int _curr_Index = 0;
+	Node<T>* _Ptr = _Front_Ptr;
+	if (_Ptr != nullptr) {
+		while (_curr_Index < _Index) {
+			_Ptr = _Ptr->_Next;
+			if (_Ptr == nullptr) return 0;
+			_curr_Index++;
+		}
+		return _Ptr;
 	}
 	return 0;
 }
@@ -520,21 +617,15 @@ inline void Linked_List<T>::removeAt(unsigned _Index)
 }
 
 template <class T>
-void Linked_List<T>::Clear()
-{
+void Linked_List<T>::Clear() {
 	Node<T>* _Ptr = _Front_Ptr;
-	Node<T>* _aux__Ptr = _Front_Ptr;
-	while (_Ptr != nullptr) {
-		_Ptr = _aux__Ptr;
-		if (_Ptr->_Next == nullptr) {
-			free(_aux__Ptr);
-			_size--;
-			break;
-		}
-		_aux__Ptr = _Ptr->_Next;
+	while (_Ptr!=null) {
+		Node<T>* temp = _Ptr->_Next;
 		free(_Ptr);
+		_Ptr = temp;
 		_size--;
 	}
+	_Front_Ptr = null;
 }
 
 template <class T>
@@ -565,6 +656,7 @@ T Linked_List<T>::find(T _value)
 	}
 	return FALSE;
 }
+
 
 template <class T>
 bool Linked_List<T>::contains(T _value)
@@ -598,8 +690,7 @@ int Linked_List<T>::size() const
 
 template <class T>
 long int Linked_List<T>::hashcode() const {
-	long double i = 2352338.2492847;
-	size_t r = sizeof i;
+	size_t r = sizeof (long double);
 	return r;
 }
 
